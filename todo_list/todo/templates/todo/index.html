@@ -6,14 +6,11 @@
     <title>Todo List</title>
 </head>
 <body>
-    <div class="navbar">
-        <h2>Todo List</h2>
-    </div>
     <div class="container">
         <div class="add-task-container">
             <a href="{% url 'todo:new' %}">Add Task</a>
         </div>
-        <h1>All Tasks</h1>
+        <h4>All Tasks</h4>
         {% for task in page_obj %}
         <div class="task" style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #ddd;">
             <div class="task-title" style="flex-grow: 1;">
