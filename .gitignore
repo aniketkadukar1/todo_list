@@ -1,1 +1,10 @@
+# Ignore database file
+db.sqlite3
+
+# Ignre venv
 venv
+
+# Ignore other files and directories
+*.pyc
+__pycache__/
+media/
