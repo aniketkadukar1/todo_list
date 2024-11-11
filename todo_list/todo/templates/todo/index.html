@@ -4,83 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Todo List</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
-        .navbar {
-            background-color: #007BFF;
-            color: #fff;
-            padding: 15px 20px;
-            text-align: left;
-            display: flex;
-            align-items: center;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        .container {
-            max-width: 800px;
-            margin: 20px auto;
-            background: #fff;
-            padding: 20px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-        }
-        h1 {
-            font-size: 28px;
-            color: #333;
-            margin-bottom: 20px;
-        }
-        .task {
-            padding: 15px;
-            border-bottom: 1px solid #ddd;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .task:last-child {
-            border-bottom: none;
-        }
-        .task-title {
-            font-size: 20px;
-            color: #555;
-            display: flex;
-            align-items: center;
-        }
-        .task-actions {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
-        .btn {
-            padding: 8px 12px;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-        }
-        .btn-update {
-            background-color: #28a745;
-        }
-        .btn-delete {
-            background-color: #dc3545;
-        }
-        .btn-add {
-            background-color: #007BFF;
-            margin-bottom: 20px;
-            display: inline-block;
-        }
-        .btn:hover {
-            opacity: 0.9;
-        }
-        .add-task-container {
-            display: flex;
-            justify-content: flex-end;
-            margin-bottom: 20px;
-        }
-    </style>
 </head>
 <body>
     <div class="navbar">
@@ -88,20 +11,41 @@
     </div>
     <div class="container">
         <div class="add-task-container">
-            <a href="{% url 'todo:new' %}" class="btn btn-add">Add Task</a>
+            <a href="{% url 'todo:new' %}">Add Task</a>
         </div>
         <h1>All Tasks</h1>
-        {% for task in tasks %}
-        <div class="task">
-            <div class="task-title">
+        {% for task in page_obj %}
+        <div class="task" style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #ddd;">
+            <div class="task-title" style="flex-grow: 1;">
                 <span>{{ task.title }}</span>
+                <span>||</span>
+                <span>(Deadline: {{ task.deadline }})</span>
             </div>
-            <div class="task-actions">
-                <a href="{% url 'todo:update' task.id %}" class="btn btn-update">Update</a>
-                <a href="{% url 'todo:delete' task.id %}" class="btn btn-delete">Delete</a>
+            <div class="task-actions" style="display: flex; gap: 10px;">
+                <a href="{% url 'todo:detail' task.id %}">Detail</a>
+                <a href="{% url 'todo:update' task.id %}">Update</a>
+                <a href="{% url 'todo:delete' task.id %}">Delete</a>
             </div>
         </div>
         {% endfor %}
+    </div>
+<br>
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            {% endif %}
+    
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+    
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
     </div>
 </body>
 </html>

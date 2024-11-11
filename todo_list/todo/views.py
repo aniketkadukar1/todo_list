@@ -1,12 +1,15 @@
 from django.shortcuts import render, redirect
 from .models import Task
 from .forms import NewTaskForm, UpdateTaskForm
+from django.core.paginator import Paginator
 
 
 def index(request):
     tasks = Task.objects.all()
-
-    return render(request, 'todo/index.html', {'tasks' : tasks})
+    paginator = Paginator(tasks, 5)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    return render(request, 'todo/index.html', {'tasks' : tasks, 'page_obj' : page_obj})
 
 def detail(request, pk):
     task = Task.objects.get(pk=pk)
